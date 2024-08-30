@@ -1,0 +1,8 @@
+<h1>Ваша корзина</h1>
+<ul>
+    {% for product in products %}
+        <li>{{ product.name }} - {{ product.price }} руб.</li>
+    {% endfor %}
+</ul>
+<p>Общая сумма: {{ total_price }} руб.</p>
+<a href="{% url 'checkout' %}">Оформить заказ</a>

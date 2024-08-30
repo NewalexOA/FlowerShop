@@ -1,0 +1,19 @@
+<!-- core/templates/core/order_complete.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Complete</title>
+    <link rel="stylesheet" href="{% static 'core/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Ваш заказ успешно оформлен!</h1>
+        <p>Спасибо за покупку. Мы скоро свяжемся с вами для подтверждения доставки.</p>
+        <a href="{% url 'home' %}" class="btn">Вернуться на главную страницу</a>
+    </div>
+</body>
+</html>

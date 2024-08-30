@@ -89,3 +89,6 @@ def checkout(request):
         return redirect('order_complete')
 
     return render(request, 'core/checkout.html')
+
+def order_complete(request):
+    return render(request, 'core/order_complete.html')

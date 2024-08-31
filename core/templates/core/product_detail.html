@@ -5,6 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ product.name }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .product-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .product-content img {
+            max-width: 50%;
+            max-height: 50%;
+            height: auto;
+            width: auto;
+            object-fit: cover;
+        }
+
+        .product-details {
+            max-width: 50%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .product-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .product-content {
+                flex-direction: column;
+            }
+
+            .product-buttons {
+                flex-direction: column;
+            }
+
+            .product-buttons .btn {
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -16,12 +62,18 @@
             <a class="nav-link" href="{% url 'register' %}">Регистрация</a>
         </nav>
 
-        <h1>{{ product.name }}</h1>
-        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid mb-3">
-        <p>{{ product.description }}</p>
-        <p>Цена: <strong>{{ product.price }} руб.</strong></p>
-        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-success">Добавить в корзину</a>
-        <a href="{% url 'product_list' %}" class="btn btn-secondary">Вернуться в каталог</a>
+        <div class="product-content">
+            <img src="data:image/jpeg;base64,{{ product.image }}" alt="{{ product.name }}">
+            <div class="product-details">
+                <h1>{{ product.name }}</h1>
+                <p>{{ product.description }}</p>
+                <p>Цена: <strong>{{ product.price }} руб.</strong></p>
+                <div class="product-buttons">
+                    <a href="{% url 'add_to_cart' product.id %}" class="btn btn-success">Добавить в корзину</a>
+                    <a href="{% url 'product_list' %}" class="btn btn-secondary">Вернуться в каталог</a>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

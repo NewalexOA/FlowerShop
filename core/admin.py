@@ -1,7 +1,13 @@
 from django.contrib import admin
 from .models import Product, Order, OrderProduct
+from .forms import ProductAdminForm
 
-admin.site.register(Product)
+
+class ProductAdmin(admin.ModelAdmin):
+    form = ProductAdminForm
+    list_display = ['name', 'price']
+
+# Регистрация моделей с классами администратора
+admin.site.register(Product, ProductAdmin)
 admin.site.register(Order)
 admin.site.register(OrderProduct)
-

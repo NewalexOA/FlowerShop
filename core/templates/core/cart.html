@@ -4,24 +4,13 @@
 
 {% block content %}
     <h1>Корзина</h1>
-    {% if products %}
-        <div class="list-group mb-4">
-            {% for cart_product in products %}
-                <div class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
-                    <div class="flex-grow-1">
-                        {{ cart_product.product.name }} ({{ cart_product.quantity }})
-                    </div>
-                    <span class="badge bg-primary rounded-pill mt-2 mt-md-0">{{ cart_product.product.price }} руб.</span>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="text-end mt-3">
-            <p>Общая стоимость: <strong>{{ total_price }} руб.</strong></p>
-            <a href="{% url 'checkout' %}" class="btn btn-success">Оформить заказ</a>
-        </div>
-    {% else %}
-        <p>Ваша корзина пуста.</p>
-    {% endif %}
+    <ul>
+        {% for cart_product in products %}
+            <li>{{ cart_product.product.name }} - {{ cart_product.quantity }} шт. - {{ cart_product.product.price }} руб. за шт.</li>
+        {% endfor %}
+    </ul>
+    <p>Общая стоимость: {{ total_price }} руб.</p>
+    <a href="{% url 'checkout' %}" class="btn btn-primary">Оформить заказ</a>
 {% endblock %}
 
 {% block extra_js %}

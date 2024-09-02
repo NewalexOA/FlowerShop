@@ -6,7 +6,6 @@ from .bot import send_order_notification
 from .forms import UserRegisterForm
 from .models import Order, OrderProduct, Product, Cart, CartProduct
 
-
 @login_required
 def checkout(request):
     if request.method == 'POST':
@@ -39,10 +38,9 @@ def checkout(request):
     else:
         return render(request, 'core/checkout.html')
 
-
 def home(request):
-    return render(request, 'core/home.html')
-
+    products = Product.objects.all()
+    return render(request, 'core/home.html', {'products': products})
 
 def register(request):
     if request.method == 'POST':
@@ -58,7 +56,6 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'core/register.html', {'form': form})
 
-
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -73,16 +70,13 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'core/login.html', {'form': form})
 
-
 def product_list(request):
     products = Product.objects.all()
     return render(request, 'core/product_list.html', {'products': products})
 
-
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     return render(request, 'core/product_detail.html', {'product': product})
-
 
 @login_required
 def add_to_cart(request, product_id):
@@ -100,7 +94,6 @@ def add_to_cart(request, product_id):
     
     return redirect('product_list')
 
-
 @login_required
 def cart_view(request):
     user = request.user
@@ -108,7 +101,6 @@ def cart_view(request):
     cart_products = CartProduct.objects.filter(cart=cart)
     total_price = sum([cp.product.price * cp.quantity for cp in cart_products])
     return render(request, 'core/cart.html', {'products': cart_products, 'total_price': total_price})
-
 
 def order_complete(request):
     return render(request, 'core/order_complete.html')

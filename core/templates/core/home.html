@@ -1,11 +1,22 @@
 {% extends "core/base.html" %}
 
-{% block title %}Главная страница{% endblock %}
+{% block title %}Каталог{% endblock %}
 
 {% block content %}
-<div class="jumbotron text-center">
-    <h1 class="display-4">Добро пожаловать в наш магазин цветов!</h1>
-    <p class="lead">Здесь вы найдете самые красивые букеты для любого случая.</p>
-    <a href="{% url 'product_list' %}" class="btn btn-primary btn-lg">Перейти в каталог</a>
-</div>
+    <h1>Каталог</h1>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="data:image/jpeg;base64,{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <p class="card-text">{{ product.price }} руб.</p>
+                        <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 import base64
 
-
 # Модель для товаров (букетов)
 class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название")
@@ -25,7 +24,6 @@ class Product(models.Model):
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
 
-
 # Модель для корзины
 class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Пользователь")
@@ -33,7 +31,6 @@ class Cart(models.Model):
 
     def __str__(self):
         return f"Корзина {self.user.username}"
-
 
 # Модель для продуктов в корзине
 class CartProduct(models.Model):
@@ -47,7 +44,6 @@ class CartProduct(models.Model):
     class Meta:
         verbose_name = "Продукт в корзине"
         verbose_name_plural = "Продукты в корзине"
-
 
 # Модель для заказов
 class Order(models.Model):
@@ -63,7 +59,6 @@ class Order(models.Model):
     class Meta:
         verbose_name = "Заказ"
         verbose_name_plural = "Заказы"
-
 
 # Промежуточная модель для связи товаров с заказами
 class OrderProduct(models.Model):
@@ -86,9 +81,8 @@ class BotSettings(models.Model):
     admin_chat_id = models.CharField(max_length=50, verbose_name="Admin Chat ID")
 
     def __str__(self):
-        return "Настройки бота"
+        return f"Настройки бота (ID: {self.id})"
     
     class Meta:
         verbose_name = "Настройки бота"
         verbose_name_plural = "Настройки бота"
-

@@ -20,5 +20,3 @@ class BaseTestCase(TestCase):
             product=self.product,
             quantity=2
         )
-
-# Create your tests here.

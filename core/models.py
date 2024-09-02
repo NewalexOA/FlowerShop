@@ -64,3 +64,9 @@ class BotSettings(models.Model):
 
     def __str__(self):
         return "Настройки бота"
+    
+    class Meta:
+        verbose_name = "Настройки бота"
+        verbose_name_plural = "Настройки бота"
+
+    

@@ -1,16 +1,60 @@
 {% extends "core/base.html" %}
 
+{% load custom_filters %}
+
 {% block title %}Корзина{% endblock %}
 
 {% block content %}
-    <h1>Корзина</h1>
-    <ul>
-        {% for cart_product in products %}
-            <li>{{ cart_product.product.name }} - {{ cart_product.quantity }} шт. - {{ cart_product.product.price }} руб. за шт.</li>
-        {% endfor %}
-    </ul>
-    <p>Общая стоимость: {{ total_price }} руб.</p>
-    <a href="{% url 'checkout' %}" class="btn btn-primary">Оформить заказ</a>
+    <div class="container mt-4">
+        <h1 class="mb-4">Корзина</h1>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if products %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Товар</th>
+                                    <th>Количество</th>
+                                    <th>Цена за шт.</th>
+                                    <th>Итого</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cart_product in products %}
+                                    <tr>
+                                        <td>{{ cart_product.product.name }}</td>
+                                        <td>{{ cart_product.quantity }} шт.</td>
+                                        <td>{{ cart_product.product.price }} руб.</td>
+                                        <td>{{ cart_product.product.price|multiply:cart_product.quantity }} руб.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Итого</h5>
+                    <p class="card-text">Общая стоимость: <strong>{{ total_price }} руб.</strong></p>
+                    <a href="{% url 'checkout' %}" class="btn btn-primary">Оформить заказ</a>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                Ваша корзина пуста. <a href="{% url 'home' %}" class="alert-link">Перейти в каталог</a>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block extra_js %}

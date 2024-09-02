@@ -2,23 +2,27 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
 from .bot import send_order_notification
 from .forms import UserRegisterForm
 from .models import Order, OrderProduct, Product, Cart, CartProduct
 
 @login_required
 def checkout(request):
+    user = request.user
+    cart, created = Cart.objects.get_or_create(user=user)
+    cart_products = CartProduct.objects.filter(cart=cart)
+    
+    if not cart_products.exists():
+        messages.warning(request, "У вас нет товаров в корзине")
+        return redirect('cart_view')
+    
     if request.method == 'POST':
-        user = request.user
         delivery_address = request.POST.get('address')
         comment = request.POST.get('comment')
 
         # Создание заказа
         order = Order.objects.create(user=user, delivery_address=delivery_address, comment=comment)
-
-        # Получение корзины пользователя
-        cart, created = Cart.objects.get_or_create(user=user)
-        cart_products = CartProduct.objects.filter(cart=cart)
 
         # Перенос товаров из корзины в заказ
         for cart_product in cart_products:
@@ -36,7 +40,8 @@ def checkout(request):
 
         return redirect('order_complete')
     else:
-        return render(request, 'core/checkout.html')
+        total_price = sum([cp.product.price * cp.quantity for cp in cart_products])
+        return render(request, 'core/checkout.html', {'cart_products': cart_products, 'total_price': total_price})
 
 def home(request):
     products = Product.objects.all()
@@ -70,10 +75,6 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'core/login.html', {'form': form})
 
-def product_list(request):
-    products = Product.objects.all()
-    return render(request, 'core/product_list.html', {'products': products})
-
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     return render(request, 'core/product_detail.html', {'product': product})
@@ -92,7 +93,7 @@ def add_to_cart(request, product_id):
         cart_product.quantity += 1
         cart_product.save()
     
-    return redirect('product_list')
+    return redirect('home')
 
 @login_required
 def cart_view(request):
@@ -100,7 +101,17 @@ def cart_view(request):
     cart, created = Cart.objects.get_or_create(user=user)
     cart_products = CartProduct.objects.filter(cart=cart)
     total_price = sum([cp.product.price * cp.quantity for cp in cart_products])
-    return render(request, 'core/cart.html', {'products': cart_products, 'total_price': total_price})
+    
+    # Получаем сообщения из сессии
+    storage = messages.get_messages(request)
+    # Преобразуем сообщения в список, чтобы их можно было использовать в шаблоне
+    message_list = list(storage)
+    
+    return render(request, 'core/cart.html', {
+        'products': cart_products, 
+        'total_price': total_price,
+        'messages': message_list
+    })
 
 def order_complete(request):
     return render(request, 'core/order_complete.html')

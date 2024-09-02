@@ -1,10 +1,24 @@
 {% extends "core/base.html" %}
+{% load static %}
 
 {% block title %}Оформление заказа{% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        <h1>Оформление заказа</h1>
+    <h1>Оформление заказа</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if cart_products %}
+        <ul>
+            {% for cart_product in cart_products %}
+                <li>{{ cart_product.product.name }} - {{ cart_product.quantity }} шт. - {{ cart_product.product.price }} руб. за шт.</li>
+            {% endfor %}
+        </ul>
+        <p>Общая стоимость: {{ total_price }} руб.</p>
         <form method="POST" action="{% url 'checkout' %}">
             {% csrf_token %}
             <div class="mb-3">
@@ -18,6 +32,6 @@
             <button type="submit" class="btn btn-primary">Подтвердить заказ</button>
         </form>
     {% else %}
-        <p>Пожалуйста, <a href="{% url 'login' %}">войдите в систему</a>, чтобы оформить заказ.</p>
+        <p>У вас нет товаров в корзине. <a href="{% url 'home' %}">Перейти в каталог</a></p>
     {% endif %}
 {% endblock %}

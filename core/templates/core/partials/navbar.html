@@ -1,6 +1,11 @@
 <nav class="nav nav-pills my-4">
     <a class="nav-link {% if request.path == '/' %}active{% endif %}" {% if request.path == '/' %}aria-current="page"{% endif %} href="{% url 'home' %}">Каталог</a>
-    <a class="nav-link {% if 'cart_view' in request.path %}active{% endif %}" href="{% url 'cart_view' %}">Корзина</a>
+    <a class="nav-link {% if 'cart_view' in request.path %}active{% endif %}" href="{% url 'cart_view' %}">
+        Корзина
+        {% if cart_item_count > 0 %}
+            <span class="badge bg-secondary">{{ cart_item_count }}</span>
+        {% endif %}
+    </a>
     {% if user.is_authenticated %}
         <a class="nav-link" href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Выход</a>
         <form id="logout-form" method="POST" action="{% url 'logout' %}" style="display: none;">

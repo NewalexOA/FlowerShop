@@ -1,13 +1,35 @@
 {% extends "core/base.html" %}
 
-{% block title %}Детали продукта{% endblock %}
+{% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
-    <h1>{{ product.name }}</h1>
-    <p>{{ product.description }}</p>
-    <p>Цена: {{ product.price }} руб.</p>
-    <form method="POST" action="{% url 'add_to_cart' product.id %}">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-primary">Добавить в корзину</button>
-    </form>
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="row g-0">
+                    <div class="col-md-6">
+                        <img src="data:image/jpeg;base64,{{ product.image }}" class="img-fluid rounded-start h-100 object-fit-cover" alt="{{ product.name }}">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body d-flex flex-column h-100 p-5">
+                            <h1 class="card-title mb-4">{{ product.name }}</h1>
+                            <p class="card-text flex-grow-1 fs-5">{{ product.description }}</p>
+                            <div class="mt-auto">
+                                <p class="card-text fs-3 mb-4"><strong>Цена: {{ product.price }} руб.</strong></p>
+                                <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-primary btn-lg w-100 py-2 fs-5">Добавить в корзину</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg">Вернуться в каталог</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

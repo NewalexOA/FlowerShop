@@ -1,7 +1,6 @@
 import os
 import django
 import telebot
-import threading
 from django.conf import settings
 from core.models import Order, OrderProduct, BotSettings
 
@@ -14,12 +13,10 @@ django.setup()
 # Инициализация бота
 bot = telebot.TeleBot(settings.TELEGRAM_BOT_TOKEN)
 
-
 # Обработчик команды /start
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     bot.reply_to(message, 'Здравствуйте! Этот бот будет уведомлять вас о новых заказах.')
-
 
 # Функция для отправки уведомления о новом заказе
 def send_order_notification(order_id):
@@ -45,13 +42,3 @@ def send_order_notification(order_id):
         print(f"Order notification sent for order ID: {order_id}")
     except Exception as e:
         print(f"Failed to send order notification: {e}")
-
-
-# Функция запуска бота
-def setup_bot():
-    bot.polling(none_stop=True)
-
-
-# Запуск бота в отдельном потоке
-bot_thread = threading.Thread(target=setup_bot)
-bot_thread.start()

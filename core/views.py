@@ -50,7 +50,6 @@ def product_detail(request, product_id):
     return render(request, 'core/product_detail.html', {'product': product})
 
 
-
 def add_to_cart(request, product_id):
     cart = request.session.get('cart', [])
     cart.append(product_id)
@@ -83,12 +82,13 @@ def checkout(request):
 
         request.session['cart'] = []
 
-        # Отправляем уведомление в Telegram
+        # Отправляем уведомление в Telegram напрямую
         send_order_notification(order.id)
 
         return redirect('order_complete')
-
+    
     return render(request, 'core/checkout.html')
+
 
 def order_complete(request):
     return render(request, 'core/order_complete.html')

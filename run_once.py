@@ -16,6 +16,9 @@ os.system('python manage.py makemigrations')
 # Выполнение миграций
 os.system('python manage.py migrate')
 
+# Сборка статических файлов
+os.system('python manage.py collectstatic')
+
 # Создание суперпользователя
 if not User.objects.filter(username='admin').exists():
     User.objects.create_superuser('admin', 'admin@admin.py', 'admin@pass')

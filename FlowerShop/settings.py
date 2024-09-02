@@ -21,8 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# Используем config для получения значений из .env файла
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = 'django-insecure-fkrhli+9rgjikrj*7qgth^i97#&(_k86*^3ol2-h8d#9&bdpm@'
 
 # Подключение токена бота из .env файла
 TELEGRAM_BOT_TOKEN = config('TELEGRAM_BOT_TOKEN')
@@ -30,7 +29,7 @@ TELEGRAM_BOT_TOKEN = config('TELEGRAM_BOT_TOKEN')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition

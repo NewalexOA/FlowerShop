@@ -39,11 +39,10 @@
     Создайте файл `.env` в корневой директории и добавьте следующие строки:
 
     ```plaintext
-    SECRET_KEY=your_secret_key
-    TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+    TELEGRAM_BOT_TOKEN='your_telegram_bot_token'
     ```
 
-    Замените `your_secret_key` на секретный ключ Django, а `your_telegram_bot_token` на токен вашего Telegram бота.
+    Замените `your_telegram_bot_token` на токен вашего Telegram бота.
 
 5. Запустите скрипт run_once.py для создания суперпользователя и миграций:
 

@@ -26,6 +26,29 @@ class Product(models.Model):
         verbose_name_plural = "Продукты"
 
 
+# Модель для корзины
+class Cart(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Пользователь")
+    products = models.ManyToManyField(Product, through='CartProduct', verbose_name="Товары")
+
+    def __str__(self):
+        return f"Корзина {self.user.username}"
+
+
+# Модель для продуктов в корзине
+class CartProduct(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, verbose_name="Корзина")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар")
+    quantity = models.PositiveIntegerField(default=1, verbose_name="Количество")
+
+    def __str__(self):
+        return f"{self.product.name} в корзине {self.cart.user.username}"
+
+    class Meta:
+        verbose_name = "Продукт в корзине"
+        verbose_name_plural = "Продукты в корзине"
+
+
 # Модель для заказов
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
@@ -69,4 +92,3 @@ class BotSettings(models.Model):
         verbose_name = "Настройки бота"
         verbose_name_plural = "Настройки бота"
 
-    

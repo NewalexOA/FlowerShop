@@ -42,3 +42,7 @@ class ProductAdminForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+
+class CheckoutForm(forms.Form):
+    address = forms.CharField(max_length=255, required=True, label='Адрес доставки')
+    comment = forms.CharField(widget=forms.Textarea, required=False, label='Комментарий')

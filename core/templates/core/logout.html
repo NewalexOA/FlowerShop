@@ -1,0 +1,8 @@
+{% extends "core/base.html" %}
+
+{% block title %}Выход{% endblock %}
+
+{% block content %}
+    <h1>Вы вышли из системы</h1>
+    <p>Вы успешно вышли из системы. <a href="{% url 'home' %}">Вернуться на главную страницу</a></p>
+{% endblock %}

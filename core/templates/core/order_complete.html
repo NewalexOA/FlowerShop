@@ -3,6 +3,17 @@
 {% block title %}Заказ завершен{% endblock %}
 
 {% block content %}
-    <h1>Спасибо за ваш заказ!</h1>
-    <p>Ваш заказ был успешно оформлен и скоро будет обработан.</p>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <h2 class="card-title mb-4">Спасибо за ваш заказ!</h2>
+                    <p>Ваш заказ был успешно оформлен и скоро будет обработан.</p>
+                    <a href="{% url 'home' %}" class="btn btn-primary btn-lg">Вернуться на главную страницу</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

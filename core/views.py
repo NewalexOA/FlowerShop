@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, authenticate
+from django.http import JsonResponse
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from .bot import send_order_notification
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, CheckoutForm
 from .models import Order, OrderProduct, Product, Cart, CartProduct
 
 @login_required
@@ -52,11 +53,15 @@ def register(request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('home')
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({'success': True, 'redirect_url': '/login/'})
+            return redirect('login')
+        else:
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                errors = {}
+                for field, error_list in form.errors.items():
+                    errors[field] = [str(error) for error in error_list]
+                return JsonResponse({'success': False, 'errors': errors})
     else:
         form = UserRegisterForm()
     return render(request, 'core/register.html', {'form': form})

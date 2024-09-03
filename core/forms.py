@@ -1,16 +1,16 @@
 from django import forms
-from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from .models import Product
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(label='Электронная почта')
-    
+
     # Убираем подтверждение password-based authentication 
     usable_password = None
-
+    
     class Meta:
-        model = get_user_model()
+        model = User
         fields = ['username', 'email', 'password1', 'password2']
         labels = {
             'username': 'Имя пользователя',
@@ -18,13 +18,12 @@ class UserRegisterForm(UserCreationForm):
             'password2': 'Подтверждение пароля',
         }
 
-class UserLoginForm(AuthenticationForm):
-    username = forms.CharField(label='Имя пользователя')
-    password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
-
-    class Meta:
-        model = get_user_model()
-        fields = ['username', 'password']
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data["email"]
+        if commit:
+            user.save()
+        return user
 
 class ProductAdminForm(forms.ModelForm):
     image_file = forms.ImageField(label="Изображение", required=False)

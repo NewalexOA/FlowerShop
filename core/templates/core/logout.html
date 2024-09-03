@@ -3,6 +3,17 @@
 {% block title %}Выход{% endblock %}
 
 {% block content %}
-    <h1>Вы вышли из системы</h1>
-    <p>Вы успешно вышли из системы. <a href="{% url 'home' %}">Вернуться на главную страницу</a></p>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <h2 class="card-title mb-4">Вы вышли из системы</h2>
+                    <p>Вы успешно вышли из системы.</p>
+                    <a href="{% url 'home' %}" class="btn btn-primary btn-lg">Вернуться на главную страницу</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
